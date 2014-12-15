@@ -1,0 +1,52 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+import module.feedContent as feedContent
+
+# getLogger
+logger = logging.getLogger() 
+        
+class clsGetFeedContent:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            inPars = web.input( feedid='', nocache='0' ) 
+            self.feedid = inPars.get( 'feedid' ).encode( 'utf8' )
+            self.nocache = int(inPars.get( 'nocache' ))
+            logger.debug( 'input: feedid=%s, nocache=%d', self.feedid, self.nocache )
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps( output, ensure_ascii=False )
+
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput() :
+            return self.faildOutput( -1, 'params invalid')
+        
+        content = feedContent.getFeedContent( self.feedid, self.nocache )
+        if len(content) == 0 :
+            return self.faildOutput( -2, 'no found content' )
+        
+        content['feedId'] = self.feedid
+
+        output = {}
+        output['status'] = 0 
+        output['msg'] = 'success'
+        output['data'] = content
+
+        return json.dumps( output, ensure_ascii=False )

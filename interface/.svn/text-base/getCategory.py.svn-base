@@ -1,0 +1,119 @@
+import os, time
+import web
+import logging
+import logging.config
+import conf
+import common.libredis as libredis
+import common.mydb as libmysql
+import urllib
+import urllib2
+import urlparse
+import string
+import module.news_interface
+import module.video_interface
+try:
+    import simplejson as json
+except:
+    import json
+
+# getLogger
+logger = logging.getLogger()
+
+class getCategory:
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+    
+    def failedOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps(output)
+
+    def getCategory ( self ):
+        inPars = web.input( type = '' )
+        inPars['type'] = inPars['type'].encode('utf8')
+        logger.debug('input: type=%s', inPars['type'])
+        self.redisCli = libredis.libredis( conf.g_conf['redis_net_assist'], 'others' )
+        if inPars['type'] == 'video':
+            return self.getVideoCat()
+        elif inPars['type'] == 'news':
+            return self.getNewsCat()
+        else:
+            logger.debug("Unsupported type: %s", inPars['type'])
+            return False
+
+    def getVideoCat ( self ):
+        noCacheFlag = 0
+        if self.redisCli.Exists("video_cat_time"):
+            logger.debug("video_cat_time value exists in cache")
+            lastUpdateTime = int(self.redisCli.Get("video_cat_time"))
+            curUnixTime = int(time.time())
+            if curUnixTime - lastUpdateTime > 86400:
+                noCacheFlag = 1
+            else:
+                if self.redisCli.Exists("video_cat"):
+                    logger.debug("get video category from cache")
+                    self.cat = json.loads(self.redisCli.Get("video_cat"), strict = False )
+                    return True
+                else:
+                    noCacheFlag = 1
+        else:
+            noCacheFlag = 1
+        if noCacheFlag == 1:
+            try:
+                curPath = os.getcwd()
+                fin=open(curPath+'/conf/video_cat.json', 'r')
+                videoCatStr = fin.read()
+                self.cat = json.loads(videoCatStr, strict = False)
+                self.redisCli.Set("video_cat", videoCatStr)
+                curUnixTime = int(time.time())
+                self.redisCli.Set("video_cat_time", str(curUnixTime))
+                fin.close()
+                return True
+            except:
+                logger.error( "Read video category from local file failed" );
+                self.cat = []
+                return False
+
+    def getNewsCat( self ):
+        noCacheFlag = 0
+        if self.redisCli.Exists("news_cat_time"):
+            logger.debug("news_cat_time value exists in cache")
+            lastUpdateTime = int(self.redisCli.Get("news_cat_time"))
+            curUnixTime = int(time.time())
+            if curUnixTime - lastUpdateTime > 86400:
+                noCacheFlag = 1
+            else:
+                if self.redisCli.Exists("news_cat"):
+                    logger.debug("get news category from cache")
+                    self.cat = json.loads(self.redisCli.Get("news_cat"), strict = False )
+                    return True
+                else:
+                    noCacheFlag = 1
+        else:
+            noCacheFlag = 1
+        if noCacheFlag == 1:
+            try:
+                newsCatStr = urllib2.urlopen("http://gtools.alibabalabs.com/apphelper/data/news_sequence.json").read()
+                self.cat = json.loads(newsCatStr, strict = False)
+                self.redisCli.Set("news_cat", newsCatStr)
+                curUnixTime = int(time.time())
+                self.redisCli.Set("news_cat_time", str(curUnixTime))
+                fin.close()
+                return True
+            except:
+                logger.error( "Read news category from remote url failed" );
+                self.cat = []
+                return False
+
+    def GET( self, *args ):
+        if not self.getCategory():
+            logger.error("getCategory() failed")
+            return self.failedOutput( -1, "get category from cache or file failed" )
+        output = {}
+        output['status'] = 0
+        output['msg'] = ''
+        output['data'] = self.cat
+
+        return json.dumps( output, ensure_ascii=False )

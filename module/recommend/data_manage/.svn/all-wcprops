@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage
+END
+db_models.py
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/Apsara/!svn/ver/282224/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/db_models.py
+END
+cache_update_controller.py
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/cache_update_controller.py
+END
+model_connect.py
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/Apsara/!svn/ver/285059/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/model_connect.py
+END
+db_models_update.py
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/db_models_update.py
+END
+cache_update_run.sh
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/cache_update_run.sh
+END
+db_cache_conf.py
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/Apsara/!svn/ver/285015/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/db_cache_conf.py
+END
+model_unit_test.py
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/model_unit_test.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/Apsara/!svn/ver/280943/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/__init__.py
+END
+model_interface.py
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/Apsara/!svn/ver/286083/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/model_interface.py
+END
+cache_update_process.py
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/Apsara/!svn/ver/287636/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/cache_update_process.py
+END
+models.py
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/Apsara/!svn/ver/280943/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/models.py
+END
+cache_models.py
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/Apsara/!svn/ver/284567/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/cache_models.py
+END
+log_conf.py
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/Apsara/!svn/ver/281227/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/log_conf.py
+END
+data_def.py
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/Apsara/!svn/ver/287682/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/data_def.py
+END

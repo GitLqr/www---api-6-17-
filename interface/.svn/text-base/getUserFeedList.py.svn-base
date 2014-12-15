@@ -1,0 +1,191 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+import module.feedList as feedList
+import module.feedContent as feedContent
+import chardet
+
+# getLogger
+logger = logging.getLogger() 
+        
+class clsGetFeedList:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            inPars = web.input( user_id='0', begin_time='0', count='20', before='1', nocache='0' ) 
+            self.uid = inPars.get( 'user_id' ).encode( 'utf8' )
+            self.begin_time = int(inPars.get( 'begin_time' ))
+            self.count = int(inPars.get( 'count' ))
+            self.before = int(inPars.get( 'before' ))
+            self.nocache = int(inPars.get( 'nocache' ))
+
+            if self.count <= 0 :
+                self.count = 20
+            
+            logger.debug( 'input: uid=%s, begin_time=%d, count=%d, before=%d, nocache=%d', 
+                                self.uid, self.begin_time, self.count, self.before, self.nocache ) 
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps( output, ensure_ascii=False )
+
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput():
+            return self.faildOutput( -1, 'params invalid')
+        
+        feedid_list = feedList.getUserFeedIdList( self.uid, self.nocache ) 
+        feedid_list.sort( lambda x,y: cmp(y[0],x[0]) )
+        #print json.dumps( feedid_list, indent=4 )
+ 
+        #print '================================================'
+
+        feedid_list = self.getSubFeedIdList( feedid_list )
+        #print json.dumps( feedid_list, indent=4 )
+        minifeed_list = self.getMiniFeeds( feedid_list )
+
+        first_update_time = 0
+        last_update_time = 0
+        if len(feedid_list) > 0:
+            first_update_time = feedid_list[0][0]
+            last_update_time = feedid_list[-1][0]
+        
+        output = {}
+        output['status'] = 0
+        output['msg' ]  = ''
+        output['first_update_time'] = first_update_time
+        output['last_update_time'] = last_update_time
+        output['lists'] = minifeed_list
+
+        return json.dumps( output, ensure_ascii=False )
+
+    def mergeFeedIdList ( self, feedid_list1, feedid_list2 ):
+        if feedid_list1 == None:
+            feedid_list1 = []
+        if feedid_list2 == None :
+            feedid_list2 = []        
+        
+        feedid_list = feedid_list1 + feedid_list2
+        
+        #按时间排序
+        feedid_list.sort( lambda x,y: cmp(y[0],x[0]) )
+
+        #去重处理
+        new_feedid_list = []
+        prev_feedid = None
+        for feedid in feedid_list :
+            if prev_feedid != None and prev_feedid[1] == feedid[1] :
+                prev_feedid[2] |= feedid[2]
+            else:
+                prev_feedid = feedid
+                new_feedid_list.append( feedid )
+
+        return new_feedid_list
+
+    def getSubFeedIdList ( self, feedid_list ):
+        if self.before:
+            s = 0
+            e = 0
+
+            if self.begin_time == 0:
+                s = 0
+                e = self.count
+            else:
+                for i in range( 0, len(feedid_list) ):
+                    if feedid_list[i][0] < self.begin_time :
+                        s = i
+                        e = s+self.count
+                        break ;
+
+            return feedid_list[s:e]
+        else:
+            s = 0
+            e = 0
+
+            if self.begin_time == 0:
+                s = 0
+                e = self.count
+            
+            else:
+                for i in range( len(feedid_list)-1, -1, -1 ):
+                    if feedid_list[i][0] > self.begin_time :
+                        s = i+1-self.count
+                        e = i+1
+                        if s < 0 :
+                            s = 0 
+                        break ;
+            
+            return feedid_list[s:e]
+
+    def getMiniFeeds ( self, feedid_list ):
+        keys = []
+        mergeFlags = {}
+        for feedid in feedid_list :
+            keys.append( feedid[1] )
+            mergeFlags[feedid[1]] = feedid[2]
+
+        minifeeds = feedContent.getMiniFeeds( keys, self.nocache )
+        minifeed_list = []
+
+        for key in keys :
+            minifeed = None
+            strMiniFeed = minifeeds.get(key)
+            if strMiniFeed == None or strMiniFeed == '' :
+                logger.error( 'the minifeed is blank, id=%s', key ) 
+                continue            
+            
+            try:
+                minifeed = json.loads( minifeeds[key], strict=False )
+            except:
+                logger.error( 'the minifeed is invalid, json load faild, id=%s, err=%s', key, str(sys.exc_info() ) )
+                continue
+            
+            minifeed['visibility'] = mergeFlags.get( key )
+            if not self.getMiniFeedDataContent( minifeed ) :
+                continue                
+                
+            minifeed_list.append( minifeed )
+
+        return minifeed_list
+            
+    def getMiniFeedDataContent ( self, minifeed ):
+        # 对每个mini_feed，检测data里面是否有内容数据，如果没有，则请求内容获取接口
+        minifeed_data = minifeed.get('data')
+        if minifeed_data == None:
+            return True     
+            
+        modified = False
+        success = False
+        i = 0
+        for minifeed_data_item in minifeed_data :
+            if minifeed_data_item.has_key( 'feedId' ) and len(minifeed_data_item) <= 2 :
+                feedid = minifeed_data_item['feedId']
+                content = feedContent.getFeedSummary( feedid )
+                if len(content) > 0 :
+                    minifeed_data[i] = content
+                    minifeed_data[i]['feedId'] = feedid
+                    modified = True
+                    success = True
+            else:
+                success = True
+
+            i += 1
+
+        if modified :
+            feedContent.updateMiniFeed_ToCache( minifeed['feedId'], json.dumps(minifeed) )
+                
+        return success    

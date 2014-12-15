@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss
+END
+oss_fs.py
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/oss_fs.py
+END
+pkg_info.py
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/pkg_info.py
+END
+oss_api.py
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/oss_api.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/__init__.py
+END
+oss_util.py
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/oss_util.py
+END
+oss_xml_handler.py
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/oss_xml_handler.py
+END
+oss_sample.py
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/oss/oss_sample.py
+END

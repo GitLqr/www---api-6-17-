@@ -1,0 +1,291 @@
+create database if not exists alinow_hqs default character set utf8;
+use alinow_hqs;
+
+CREATE TABLE IF NOT EXISTS `cart_feature_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `feature_name` varchar(200) NOT NULL,
+  `item_id_list` blob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feature_name` (`feature_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `cart_item_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `cart_item_id_new_to_old` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `new_item_id` varchar(32) NOT NULL,
+  `old_item_id` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `new_item_id` (`new_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `cart_item_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `cart_user_feature_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `feature_name_item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `cart_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_feature_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `feature_name` varchar(200) NOT NULL,
+  `item_id_list` blob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feature_name` (`feature_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_item_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_item_id_new_to_old` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `new_item_id` varchar(32) NOT NULL,
+  `old_item_id` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `new_item_id` (`new_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_item_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_user_feature_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `feature_name_item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `movi_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `news_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_feature_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `feature_name` varchar(200) NOT NULL,
+  `item_id_list` blob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feature_name` (`feature_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_item_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_item_id_new_to_old` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `new_item_id` varchar(32) NOT NULL,
+  `old_item_id` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `new_item_id` (`new_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_item_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_user_feature_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `feature_name_item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `novl_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `offline_update_status` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `day_index` varchar(16) NOT NULL,
+  `db_update_time` datetime DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `try_times` int(11) DEFAULT NULL,
+  `cache_update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `day_index` (`day_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `resource_hot_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `resource_type` varchar(8) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `resource_type` (`resource_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_feature_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `feature_name` varchar(200) NOT NULL,
+  `item_id_list` blob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feature_name` (`feature_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_item_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_item_id_new_to_old` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `new_item_id` varchar(32) NOT NULL,
+  `old_item_id` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `new_item_id` (`new_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_item_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_user_feature_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `feature_name_item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `show_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_feature_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `feature_name` varchar(200) NOT NULL,
+  `item_id_list` blob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feature_name` (`feature_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_item_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_item_id_new_to_old` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `new_item_id` varchar(32) NOT NULL,
+  `old_item_id` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `new_item_id` (`new_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_item_recommend_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(32) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_user_feature_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `feature_name_item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tele_user_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_recent_favor_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `resource_type` varchar(8) DEFAULT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_uid_resource_type` (`uid`,`resource_type`),
+  KEY `user_recent_favor_item_id_list_uid_index` (`uid`),
+  KEY `user_recent_favor_item_id_list_resourcetype_index` (`resource_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_recent_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `resource_type` varchar(8) DEFAULT NULL,
+  `user_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_uid_resource_type` (`uid`,`resource_type`),
+  KEY `user_recent_feature_list_uid_index` (`uid`),
+  KEY `user_recent_feature_list_resourcetype_index` (`resource_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_recent_push_feature_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `item_feature_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_recent_push_item_id_list` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `item_id_list` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_recent_resource_visit_info` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `resource_type` varchar(8) DEFAULT NULL,
+  `visit_info` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_uid_resource_type` (`uid`,`resource_type`),
+  KEY `user_recent_resource_visit_info_uid_index` (`uid`),
+  KEY `user_recent_resource_visit_info_resourcetype_index` (`resource_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_resource_visit_info` (
+  `id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `resource_type` varchar(8) DEFAULT NULL,
+  `visit_info` mediumblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_uid_resource_type` (`uid`,`resource_type`),
+  KEY `user_resource_visit_info_uid_index` (`uid`),
+  KEY `user_resource_visit_info_resourcetype_index` (`resource_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

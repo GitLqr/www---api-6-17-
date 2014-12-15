@@ -1,0 +1,76 @@
+#0.通用接口
+message VisitInfo
+{
+    optional int32 pv_count = 1;
+    optional int32 click_count = 2;
+    optional double weight = 3;
+}
+
+message ItemFeature
+{
+    optional string feature_name = 1;
+    optional double weight = 2;
+}
+
+message UserFeature
+{
+    optional string feature_name = 1;
+    optional VisitInfo visit_info = 3;
+}
+
+message ItemFeatureList
+{
+    repeated ItemFeature feature = 1;
+}
+
+message UserFeatureList
+{
+    repeated UserFeature feature = 1;
+}
+
+#1. item类接口
+message ItemIdList
+{
+    repeated string item_id = 1;
+}
+
+message FeatureNameItemIdList
+{
+    message FeatureNameItemIdListItem
+    {   
+        optional string feature_name = 1;
+        repeated string item_id = 2;
+    }   
+    repeated FeatureNameItemIdListItem feature_name_item_id_list = 1;
+}
+
+#2. 新闻类接口
+message FeatureNameLimit
+{
+    optional string feature_name = 1;
+    optional int32 limit = 2;
+}
+
+message FeatureNameLimitList
+{
+    repeated FeatureNameLimit feature_name_limit = 1;
+}
+
+message NewsItemFeatureInfo
+{
+    optional ItemFeatureList item_feature_list = 1;
+    optional string item_info = 2;
+    optional string item_id = 3;
+}
+
+message NewsItemFeatureInfoList
+{
+    optional string feature_name = 1;
+    repeated NewsItemFeatureInfo item_feature_info = 2;
+}
+
+message NewsFeatureItemList
+{
+    repeated NewsItemFeatureInfoList feature_item = 1;
+}
+

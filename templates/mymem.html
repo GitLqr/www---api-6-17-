@@ -1,0 +1,20 @@
+$def with (data)
+<html>
+<head> <title> MY MEMORY </title> </head>
+<body>    
+<table border="0"> 
+<form action='/mymem' method='get'>
+$if len(data) > 0:
+    <tr><h2>total $len(data) questions.</h2></tr>
+    <tr><td><input type=submit value='Yes' name=mem></td><td><input type=submit value='No' name=mem></td><tr>
+    <tr><td>question:</td><td><input type=text value="$data[0][0]" name=question readonly="true" size="${len(data[0][0])+5}"></td></tr> 
+    <tr><td>answer:</td><td><textarea rows=${len(data[0][1].split('\n'))+5} cols=50 for i in data[0][1].split("\n")]+[30,])} value="${data[0][1].strip()}" name=answer>$data[0][1]</textarea></td></tr> 
+    <tr><td>type:</td><td><input type=text value="$data[0][2]" name=type size=30></td></tr> 
+    <tr><td>familiar:</td><td><input type=text value="$data[0][3]" name=familiar size=30></td></tr> 
+    <tr><td>update_time:</td><td><input type=text value="$data[0][4]" name=last_modify_time readonly="true" size=30></td></tr> 
+$else:
+    <tr><td>done</td></tr>
+</form>
+</table>
+</body>
+</html>

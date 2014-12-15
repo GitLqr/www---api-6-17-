@@ -1,0 +1,68 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+import module.feedContent as feedContent
+
+# getLogger
+logger = logging.getLogger() 
+        
+class clsGetFeedInfo:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            self.inPars = web.input( type='', id='', info_type='0', nocache='0' ) 
+            for key in self.inPars:
+                self.inPars[key] = self.inPars[key].encode( 'utf8' )
+            logger.debug( 'input: %s', str(self.inPars) )
+
+            self.inPars['info_type'] = int(self.inPars['info_type'])
+            self.inPars['nocache'] = int(self.inPars['nocache'])
+
+            self.type = self.inPars['type']
+            self.nocache = self.inPars['nocache']
+
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        strCallback = self.inPars.get( 'callback' )
+        if strCallback != None:
+            output = '%s(%s)' % (strCallback, json.dumps( {'status': err, 'msg' : msg},ensure_ascii=False )) 
+        else:
+            output = json.dumps( {'status': err, 'msg' : msg}, ensure_ascii=False )
+        return  output
+
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput() :
+            return self.faildOutput( -1, 'params invalid')
+        
+        status = 0
+        msg = ''
+        content = None
+
+        (status, msg, content) = feedContent.getFeedInfo( self.type, self.inPars, self.nocache )
+        
+        output = {}
+        output['status'] = status 
+        output['msg'] = msg 
+        output['data'] = content
+
+        strCallback = self.inPars.get( 'callback' )
+        if strCallback != None:
+            return '%s(%s)' % (strCallback, json.dumps( output, ensure_ascii=False ))
+        else:
+            return json.dumps( output, ensure_ascii=False )
+

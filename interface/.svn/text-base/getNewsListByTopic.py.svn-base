@@ -1,0 +1,79 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+import chardet
+import copy
+import time
+import random
+import time
+import datetime
+
+import module.news_interface as news_interface
+
+# getLogger
+logger = logging.getLogger() 
+        
+###############################################################################
+# 得到首页列表
+class clsGetNewsListByTopic:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            self.inPars = web.input( cid='0', begin_time='0', area='', nocache='0' )
+            logger.debug( 'input: %s', str(self.inPars) ) 
+
+            self.cid = self.inPars['cid'].encode('utf8')
+            self.begin_time = int(self.inPars['begin_time'])
+            self.nocache = int(self.inPars[ 'nocache' ])
+            self.area = self.inPars['area']
+
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps( output, ensure_ascii=False )
+      
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput():
+            return self.faildOutput( -1, 'params invalid')
+        
+        if self.cid == '' or self.cid == '0' :
+            self.cid = self.getTopicIdByArea( self.area )
+            logger.debug( 'cid is blank, and get local topic by area, cid=%s, area=%s', self.cid, self.area )
+
+        news_list, firstUpdateTime, lastUpateTime = news_interface.getNewsListFromRead( self.cid, self.begin_time )
+        
+        output = {}
+        output['status'] = 0
+        output['msg' ]  = ''
+        output['first_update_time'] = firstUpdateTime
+        output['last_update_time'] = lastUpateTime
+        output['count'] = len( news_list )
+        output['lists'] = news_list
+
+        return json.dumps( output, ensure_ascii=False )
+
+    def getTopicIdByArea ( self, area ):
+        import getAreaList
+        x = getAreaList.getAreaList()
+        x.GET()
+        data = x.areaList
+        for i in xrange(len(data)):
+            logger.debug("checking %s", data[i]["area"])
+            if data[i]["area"] == area:
+                return data[i]["id"]
+        return '0'

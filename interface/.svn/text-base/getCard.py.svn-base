@@ -1,0 +1,67 @@
+import os, time
+import web
+import logging
+import logging.config
+import conf
+import common.libredis as libredis
+import common.mydb as libmysql
+import urllib
+import urllib2
+import urlparse
+import string
+import json
+
+# getLogger
+logger = logging.getLogger() 
+
+class clsGetCard:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps(output)
+
+    def getInput (self):
+        try:
+            self.inPars = web.input(type='', cid='')
+            logger.debug('input: %s', str(self.inPars))
+            self.type = self.inPars['type'].encode('utf8')
+            self.cid = self.inPars['cid'].encode('utf8')
+            return True
+        except:
+            logger.error("input invalid, %s, %s", sys.exc_info()[0] , sys.exc_info()[1])
+            return False
+
+    def getVideoCardList(self):
+        videoUrl = 'http://www.yisou.com/json/get_ipad.php?s_type=%s&type=shipin_liebiao&page=%s&active=%s&class_id=%s&area_id=%s&actor_id=%s&director_id=%s&year=%s' %('', '', '','', '', '', '', '');
+        return {}
+
+    def GET(self, *args):
+        if not self.getInput():
+            return self.faildOutput( -1, 'params invalid')
+
+        if self.type == 'video':
+            logger.debug("Unsupported type: %s", self.type )
+            return self.faildOutput( -1, 'Unsupported video')
+
+        elif self.type.lower() == 'news':
+            if self.cid == '500001' :
+                import getTodayHeadlineList
+                x = getTodayHeadlineList.clsGetTodayHeadlineList()
+                return x.GET()
+            elif self.cid == '500002' :
+                logger.debug("Unsupported cid: %s", self.cid )
+                return self.faildOutput( -1, 'Unsupported recommend')
+            else:
+                import getNewsListByTopic
+                x = getNewsListByTopic.clsGetNewsListByTopic()
+                return x.GET()
+        else:
+            logger.debug("Unsupported type: %s", self.type)
+            return self.faildOutput( -1, 'Unsupported type: %s' % self.type )
+

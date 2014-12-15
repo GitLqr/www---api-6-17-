@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto
+END
+novel_chapter_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/novel_chapter_pb2.py
+END
+novel_meta_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/novel_meta_pb2.py
+END
+novel_offline_meta_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/novel_offline_meta_pb2.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/__init__.py
+END
+novel_body_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/novel_body_pb2.py
+END
+notice_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/notice_pb2.py
+END
+novel_pb2.py
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/Apsara/!svn/ver/277345/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/novel/novel_proto/novel_pb2.py
+END

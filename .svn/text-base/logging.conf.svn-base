@@ -1,0 +1,62 @@
+# logging.conf
+
+[loggers]
+keys=root,info,recommend
+
+[handlers]
+keys=consoleHandler, rootSocketHandler, infoSocketHandler, recommendHandler
+
+[formatters]
+keys=rootFormatter,infoFormatter
+
+[formatter_rootFormatter]
+format=[%(asctime)s][%(levelname)s][%(filename)s:%(lineno)d]: %(message)s
+
+[formatter_infoFormatter]
+format=%(asctime)s|%(message)s
+
+[logger_root]
+level=DEBUG
+handlers=rootSocketHandler, consoleHandler
+
+[logger_info]
+level=INFO
+handlers=infoSocketHandler
+qualname=info
+propagate=0
+
+[logger_recommend]
+level=DEBUG
+handlers=recommendHandler
+qualname=recommend
+propagate=0
+
+[handler_consoleHandler]
+class=StreamHandler
+level=DEBUG
+formatter=rootFormatter
+args=(sys.stdout,)
+
+[handler_rotateFileHandler]
+class=handlers.RotatingFileHandler
+level=DEBUG
+formatter=rootFormatter
+args=('blank.log', 'a', 200000, 9)
+
+[handler_rootSocketHandler]
+class=common.logging_net_handler.UdpHandler
+level=DEBUG
+formatter=rootFormatter
+args=('10.230.230.49', 31500)
+
+[handler_infoSocketHandler]
+class=common.logging_net_handler.UdpHandler
+level=INFO
+formatter=infoFormatter
+args=('10.230.230.49', 31500)
+
+[handler_recommendHandler]
+class=handlers.RotatingFileHandler
+level=DEBUG
+formatter=rootFormatter
+args=('recommend.log', 'a', 1024000124, 10)

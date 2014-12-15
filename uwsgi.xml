@@ -1,0 +1,15 @@
+<uwsgi>  
+  <socket>0.0.0.0:8000</socket>  
+  <listen>100</listen>  
+  <master>true</master>  
+  <pidfile>./uwsgi.pid</pidfile>  
+  <processes>20</processes>  
+  <module>web_main</module>  
+  <pythonpath>/home/hualai.deng/usr/local/www</pythonpath> 
+  <profiler>true</profiler>  
+  <memory-report>true</memory-report>  
+  <enable-threads>true</enable-threads>  
+  <logdate>true</logdate>  
+  <limit-as>6048</limit-as>  
+</uwsgi> 
+

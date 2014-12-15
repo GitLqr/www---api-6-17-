@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/Apsara/!svn/ver/287520/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql
+END
+recommend_common.sql
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/Apsara/!svn/ver/287520/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql/recommend_common.sql
+END
+recommend_item_template.sql
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/Apsara/!svn/ver/287520/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql/recommend_item_template.sql
+END
+recommend_news_like_template.sql
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/Apsara/!svn/ver/287520/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql/recommend_news_like_template.sql
+END
+mysql_field_type.txt
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/Apsara/!svn/ver/280887/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql/mysql_field_type.txt
+END
+recommend_database.sql
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/Apsara/!svn/ver/281730/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/sql/recommend_database.sql
+END

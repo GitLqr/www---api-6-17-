@@ -1,0 +1,328 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+import chardet
+import copy
+import time
+import random
+import time
+import datetime
+
+import module.feedList as feedList
+import module.feedContent as feedContent
+
+# getLogger
+logger = logging.getLogger() 
+        
+###############################################################################
+# 得到首页列表
+class clsGetTodayHeadlineList:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            self.inPars = web.input( nocache='0' )
+            logger.debug( 'input: %s', str(self.inPars) ) 
+      
+            self.nocache = int(self.inPars[ 'nocache' ])
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps( output, ensure_ascii=False )
+      
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput():
+            return self.faildOutput( -1, 'params invalid')
+           
+        feedid_list = self.getNewsHeadlineFeedIdList() ;
+        minifeed_list = clsGetTodayHeadlineList.getMiniFeeds( feedid_list, self.nocache )
+        minifeed_list = self.splitNewsMinifeeds( minifeed_list )
+
+        # 转换image节点 
+        clsGetTodayHeadlineList.transMiniFeedDataImageNodes( minifeed_list)
+
+#        first_update_time = 0
+#        last_update_time = 0
+#        if len(feedid_list) > 0:
+#            first_update_time = feedid_list[0][0]
+#            last_update_time = feedid_list[-1][0]
+        
+        output = {}
+        output['status'] = 0
+        output['msg' ]  = ''
+#        output['first_update_time'] = first_update_time
+#        output['last_update_time'] = last_update_time
+        output['count'] = len( minifeed_list )
+        output['lists'] = minifeed_list
+
+        return json.dumps( output, ensure_ascii=False )
+
+    # 得到今天的所有今日头条
+    def getNewsHeadlineFeedIdList ( self ):
+        feedid_list  = feedList.getGlobalNewsFeedIdList( self.nocache )
+        feedid_list.sort( lambda x,y: cmp(y[0],x[0]) )
+
+        begin_time =  int(time.mktime(time.strptime(datetime.date.today().isoformat(), '%Y-%m-%d')))
+        
+        sp = 0 
+        ep = 1+clsGetTodayHeadlineList.getFeedListBeginIndexByUpdateTime( feedid_list, begin_time, 0 )
+
+        feedid_list = feedid_list[sp:ep]
+        return feedid_list
+
+    # 将卡片里的多个新闻拆分成多个卡片，每个卡片一条新闻
+    def splitNewsMinifeeds ( self, minifeed_list ):
+        new_minifeed_list = []
+        for minifeed in minifeed_list :
+            dataList = minifeed.get('data')
+            if dataList == None or len(dataList) <= 0 :
+                continue
+
+            i = 0
+            for data in dataList :
+                newMiniFeed = copy.copy( minifeed )
+                newMiniFeed['feedId'] += '_'+str(i)
+                newMiniFeed['data']= [data]
+
+                imageDataList = data.get('imageDataList')
+                if imageDataList == None or len(imageDataList) <= 0 :
+                    newMiniFeed['layout'] = 'single'
+                else:
+                    newMiniFeed['layout'] = 'singleRight'
+                
+                new_minifeed_list.append( newMiniFeed )
+                i += 1
+
+        return new_minifeed_list            
+
+    # 二分法查找update_time的起始位置
+    @staticmethod
+    def getFeedListBeginIndexByUpdateTime ( feedid_list, update_time, before ):    
+        # 向前
+        def getBeginIndexByUpdateTime_Before ( feedid_list, sp, ep, update_time ):
+            if sp > ep :
+                return -1            
+            elif sp == ep :
+                if update_time > feedid_list[sp][0]:
+                    return sp
+                else:
+                    return sp+1
+            elif sp == ep-1 :
+                if update_time > feedid_list[sp][0] :
+                    return sp
+                else:
+                    if update_time > feedid_list[ep][0] :
+                        return ep
+                    else:
+                        return ep+1
+            else:            
+                i = (sp+ep)/2
+                if update_time <= feedid_list[i][0] :
+                    return getBeginIndexByUpdateTime_Before( feedid_list, i+1, ep, update_time )
+                else:
+                    return getBeginIndexByUpdateTime_Before( feedid_list, sp, i, update_time )
+
+        # 向后
+        def getBeginIndexByUpdateTime_After ( feedid_list, sp, ep, update_time ):
+            if sp > ep :
+                return -1            
+            elif sp == ep :
+                if update_time < feedid_list[ep][0]:
+                    return ep
+                else:
+                    return ep-1
+            elif sp == ep-1 :
+                if update_time < feedid_list[ep][0] :
+                    return ep
+                else:
+                    if update_time < feedid_list[sp][0] :
+                        return sp
+                    else:
+                        return sp-1
+            else:            
+                i = (sp+ep)/2
+                if update_time >= feedid_list[i][0] :
+                    return getBeginIndexByUpdateTime_After( feedid_list, sp, i-1, update_time )
+                else:
+                    return getBeginIndexByUpdateTime_After( feedid_list, i, ep, update_time )
+           
+        if before:
+            return getBeginIndexByUpdateTime_Before( feedid_list, 0, len(feedid_list)-1, update_time )
+        else:
+            return getBeginIndexByUpdateTime_After( feedid_list, 0, len(feedid_list)-1, update_time )
+
+    # 根据count截取一定得feedid
+    @staticmethod
+    def getSubFeedIdList ( feedid_list, begin_time, count, before ):
+        if count <= 0:
+            return []
+        
+        feedid_count = len(feedid_list)
+        s = 0
+        e = 0
+
+        if before:
+            if begin_time <= 0 :
+                s = 0
+                e = count
+            else:
+                s = clsGetTodayHeadlineList.getFeedListBeginIndexByUpdateTime( feedid_list, begin_time, before )
+                e = s+count
+                s = 0 if s < 0 else s
+                e = feedid_count if e > feedid_count else e
+
+            # 结尾的相同时间一起返回
+            i = e
+            for i in xrange( e, feedid_count+1 ) :
+                if i == feedid_count or feedid_list[e-1][0] != feedid_list[i][0] :
+                    break
+
+            e = i
+
+        else:
+            if begin_time <= 0 :
+                s = 0
+                e = count
+            else:
+                e = 1+clsGetTodayHeadlineList.getFeedListBeginIndexByUpdateTime( feedid_list, begin_time, before )
+                s = e-count
+                s = 0 if s < 0 else s
+                e = feedid_count if e > feedid_count else e
+                
+            # 结尾的相同时间一起返回
+            i = s-1
+            for i in xrange( s-1, -2, -1 ) :
+                if i == -1 or feedid_list[s][0] != feedid_list[i][0] :
+                    break
+
+            s = i+1
+
+        return feedid_list[s:e]
+        
+    # 取minifeed
+    @staticmethod
+    def getMiniFeeds ( feedid_list, nocache ):
+        # feedid_list 格式为:
+        # [[update_time,feedid,dataid,visibile],...]
+        # 如果dataid有效，则返回的数据中，要根据dataid对data节点下面的子节点进行过滤
+        keys = set([i[1] for i in feedid_list])
+        minifeeds = feedContent.getMiniFeeds( keys, nocache )
+        minifeeds = feedContent.getMiniFeedsDataContent( minifeeds )
+        minifeed_list = []
+
+        for feedid_fds in feedid_list :
+            feedid = feedid_fds[1]
+            dataid = feedid_fds[2] 
+            
+            # 取对应的minifeed
+            minifeed = minifeeds[feedid]
+            if minifeed == None:
+                continue
+
+            newMiniFeed = None
+            if dataid == '':
+                newMiniFeed = minifeed 
+            else:
+                # 需要根据dataid进行过滤
+                newMiniFeed = copy.copy( minifeed )
+                newMiniFeed['data']= []
+                for minifeed_data_item in minifeed['data'] :
+                    if minifeed_data_item.get('id') == dataid :
+                        newMiniFeed['data'].append( minifeed_data_item )
+                        break
+
+                if len(newMiniFeed['data']) <= 0 :
+                    continue
+                    
+            # 加入到list
+            minifeed_list.append( newMiniFeed )
+
+        return minifeed_list
+
+    # 得到minifeed list下面的所有data ids
+    @staticmethod
+    def getMiniFeedAllDataIds ( minifeed_list ):
+        ids = []
+        for minifeed in minifeed_list :
+            for minifeed_data_item in minifeed['data'] :
+                ids.append( minifeed_data_item['id'] )
+
+        print '=========================================='
+        print str(ids)
+        return ids
+
+    # 转换feed data节点下面的imageData字段
+    @staticmethod
+    def transMiniFeedDataImageNodes ( minifeed_list ):
+        logger.debug( 'transMiniFeedDataImageNodes...' )
+        count = 0
+        for minifeed in minifeed_list :
+            # 对data里面的imageData节点做转换
+            for minifeed_data_item in minifeed['data'] :
+                clsGetTodayHeadlineList.transImageNodes( minifeed_data_item, '', 2 )
+                count += 1
+        logger.debug( 'transMiniFeedDataImageNodes end, nodes=%d' , count )
+            
+    # 转换feed data节点下面的imageData字段
+    @staticmethod
+    def transImageNodes( item, view_type, trans_depth = 3 ):
+        # 将imageData节点，替换成image节点
+        def imageDataNodeToImageNode ( imageData, view_type ):
+            if imageData == None or not isinstance( imageData, dict ) :
+                return None
+            image = imageData.get( view_type )
+            if image == None:
+                return imageData.get( 'default' )
+            else:
+                return image
+        #end
+        # 将imageData节点，替换成image节点
+        def imageDataListNodeToImageListNode ( imageDataList, view_type ):
+            if imageDataList == None or not isinstance( imageDataList, list ) :
+                return None
+
+            imageList = []
+            for imageData in imageDataList :
+                image = imageData.get( view_type )
+                if image == None:
+                    image = imageData.get( 'default' )
+                if image != None:
+                    imageList.append( image )
+
+            return imageList
+        #end
+
+        if not isinstance( item, dict ):
+            return
+        
+        image = imageDataNodeToImageNode( item.get( 'imageData' ), view_type )
+        if image != None :
+            item['imageData'] = image
+
+        imageList = imageDataListNodeToImageListNode( item.get( 'imageDataList' ), view_type )
+        if imageList != None :
+            item['imageDataList'] = imageList
+
+        if trans_depth <= 1 :
+            return
+
+        for key,value in item.iteritems():
+            if not isinstance( value, list ):
+                continue
+            for list_item in value :
+                clsGetTodayHeadlineList.transImageNodes( list_item, view_type, trans_depth-1 )
+                

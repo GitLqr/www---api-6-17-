@@ -1,0 +1,108 @@
+#-*- coding: utf8 -*-
+# created by hualai.deng , 2013-04-01
+import sys
+import os
+
+##########################################################################
+# the global config
+g_conf = { 
+    'db_net_assist': {
+        "host": "10.230.230.49", 
+        "db_name": "test_assist", 
+        "user": "root",
+        "passwd": "", 
+        "port": 3306,
+        "charset":"utf8"
+    } ,
+
+    'redis_net_assist':
+    {
+        'feed_list': {
+            "addrs": "10.250.12.85:6379,10.250.12.85:6380;10.230.230.49:6379",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'minifeed': {
+            "addrs": "10.250.12.85:6379,10.250.12.85:6380;10.230.230.49:6379",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'feed_content': {
+            "addrs": "10.250.12.85:6379,10.250.12.85:6380;10.230.230.49:6379",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'req_recommend':{
+            "addrs": "10.230.230.49:6370",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'others': {
+            "addrs": "10.250.12.85:6379,10.250.12.85:6380;10.230.230.49:6379",
+            "timeout" : 100,
+            "charset": "utf8"
+         }
+     }
+}
+
+g_conf_test = { 
+    'db_net_assist': {
+        "host": "127.0.0.1", 
+        "db_name": "assist_duhui", 
+        "user": "root",
+        "passwd": "", 
+        "port": 3306,
+        "charset":"utf8"
+    } ,
+
+    'redis_net_assist':
+    {
+        'feed_list': {
+            "addrs": "10.250.12.85:6385,10.250.12.85:6386;10.230.230.49:6381",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'location_feed_list': {
+            "addrs": "10.250.12.85:6385,10.250.12.85:6386;10.230.230.49:6381",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'minifeed': {
+            "addrs": "10.250.12.85:6385,10.250.12.85:6386;10.230.230.49:6381",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'feed_content': {
+            "addrs": "10.250.12.85:6385,10.250.12.85:6386;10.230.230.49:6381",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'req_recommend':{
+            "addrs": "10.230.230.49:6370",
+            "timeout" : 100,
+            "charset": "utf8"
+         },
+        'others': {
+            "addrs": "10.250.12.85:6385,10.250.12.85:6380;10.230.230.49:6381",
+            "timeout" : 100,
+            "charset": "utf8"
+         }
+     }
+}
+
+#########################################################################
+# methods
+#########################################################################
+# get the config object
+def getConfig ( key = None ):
+    global g_conf
+    if key == None:
+        return g_conf
+    return g_conf.get( key )    
+    
+
+########################################################################
+# test
+if __name__ == "__main__" :
+    print str(g_conf)
+    print str(g_conf_test)

@@ -1,0 +1,13 @@
+
+##基本类型
+#itemid VARCHAR(32)
+#uid VARCHAR(255)
+#item_id_list MEDIUMBLOB
+#item_feature_list  MEDIUMTEXT
+#user_feature_list  MEDIUMTEXT
+#resource_type VARCHAR(8)
+#visit_info TINYBLOB
+#feature_name_item_id_list MEDIUMBLOB
+#feature_name VARCHAR(200)
+#old_item_id TINYTEXT
+

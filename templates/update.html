@@ -1,0 +1,17 @@
+$def with (data, suggessions)
+<html>
+<head> <title> UPDATE CONTENT </title> </head>
+<body>    
+<table border="0"> 
+<form action='/update' method='get'>
+<tr><td>question search:</td><td><input type=text name=question size=30 value="${data.question}"></td></tr> 
+<tr><td>answer:</td><td><textarea rows=${len(data.answer.split('\t'))+5} cols=50 value="${data.answer}" name=answer>${data.answer}</textarea></td></tr> 
+<tr><td>type:</td><td><input type=text value="${data.type}" name=type size=30></td></tr> 
+<tr><td>familiar:</td><td><input type=text value="${data.familiar}" name=familiar size=30></td></tr> 
+<tr><td>update_time:</td><td><input type=text value="${data.last_modify_time}" name=last_modify_time readonly="true" size=30></td></tr> 
+<tr><td>suggessions:</td><td><textarea rows=${len(suggessions.split('\n'))} cols=30 value="${suggessions}" name=suggessions>${suggessions}</textarea></td></tr> 
+<tr><td><input type=submit value=update name=update></td><td><input type=submit value=search name=search></td><tr>
+</form>
+</table>
+</body>
+</html>

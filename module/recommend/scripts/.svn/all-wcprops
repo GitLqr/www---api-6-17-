@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/Apsara/!svn/ver/287283/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/scripts
+END
+generate_all_table.sh
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/Apsara/!svn/ver/287283/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/scripts/generate_all_table.sh
+END
+create_all_table.sh
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/Apsara/!svn/ver/280887/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/scripts/create_all_table.sh
+END
+generate_resource_mysql.py
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/Apsara/!svn/ver/280887/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/scripts/generate_resource_mysql.py
+END

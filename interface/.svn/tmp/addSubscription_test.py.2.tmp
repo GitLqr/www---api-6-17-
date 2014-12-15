@@ -1,0 +1,151 @@
+##
+# @file adddSubscription.py
+# @duhui.dh 
+# @author duhui,  duhui.dh@aliyun-inc.com  duhui219@gmail.com
+# @version 1.0.0
+# @date 2013-04-19
+import os, time
+import web
+import logging
+import logging.config
+import conf
+import common.libredis as libredis
+import common.mydb as libmysql
+import string
+import json
+# getLogger
+logger = logging.getLogger() 
+        
+class addSubscription:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        
+        return  json.dumps(output)
+        #return  json.dumps( output, ensure_ascii=False )
+
+    def getInput (self):
+        try:
+<<<<<<< .mine
+            inPars = web.input(uid='',feedid = '', op = '') 
+            self.uid = inPars.get('uid').encode("utf8") if isinstance(inPars.get('uid'), unicode) else inPars.get('uid')
+=======
+            inPars = web.input(uid='',feedid = '', op = '') 
+            self.uid = inPars.get('user_id').encode("utf8") if isinstance(inPars.get('user_id'), unicode) else inPars.get('user_id')
+>>>>>>> .r265944
+            self.feedid = inPars.get('feedid').encode("utf8")  if isinstance(inPars.get('feedid'), unicode) else inPars.get('feedid') 
+            self.op = inPars.get('op').encode("utf8")  if isinstance(inPars.get('op'), unicode) else inPars.get('op') 
+        except:
+            return self.faildOutput(-2, "Input Invalid")
+
+    def addUid(self):
+        if  (self.op == "add"):
+            # insert into mysql 
+            insert_list = []
+            insert_list.append((self.uid, self.feedid));
+            sql ="INSERT INTO subscription(`user_id`, `feed_id`, `last_modify_time`, `insert_time`) VALUES(%s, %s,NOW(), NOW());"
+            try:
+                mysql = libmysql.MyDB(conf.g_conf['db_net_assist']);
+                mysql.executemany(sql, insert_list)
+            except Exception, e:
+                return 1
+
+            #insert into follower
+            value = [];
+            key = self.uid + "_fl"
+            redis = libredis.libredis( conf.g_conf['redis_net_assist'], 'feed_list' )
+            value.append(self.feedid)
+            if (redis.LPush(key, value) != 1):
+                return  2
+
+            value = [];
+            value.append(self.uid)
+            key = self.feedid + "_ul"
+            if (redis.LPush(key, value) != 1):
+                return 3 
+
+
+            # insert success
+            return 0
+
+         
+    def delUid(self):
+        if (self.op == "del"):
+            # delete follower
+            key = self.uid + "_fl"
+            redis = libredis.libredis( conf.g_conf['redis_net_assist'], 'feed_list' )
+            if(redis.LRem(key,  self.feedid, 0) != 1):
+                return 5
+
+            # delete inbox
+            sql = "SELECT insert_time from subscription where user_id ='%s' and feed_id = '%s';" %(self.uid, self.feedid) 
+            try:
+                mysql = libmysql.MyDB(conf.g_conf['db_net_assist']);
+                time_list =   mysql.query(sql)
+                if time_list is not None and len(time_list) > 0:
+                    for inserttime  in time_list:
+                        stamp = time.mktime(inserttime[0].timetuple())
+                        timestamp = str(stamp).split('.')[0]
+                        key = self.uid + "_fid"
+                        logger.error("timestamp = %s", timestamp);
+                        if (redis.Exists(key)):
+                            if(redis.LRem(key, timestamp + "\t" + self.feedid, 0) != 1):
+                                logger.info("delete inbox fail %s", self.feedid)
+                                return 6
+            except Exception, e:
+                logger.error("ERROR\t%s",e);
+                return 7
+
+            key = self.feedid + "_ul"
+            if(redis.LRem(key,  self.uid, 0) != 1):
+                return 11
+
+
+            # delete mysql 
+            sql ="DELETE FROM subscription where user_id = '%s' and feed_id = '%s';"%(self.uid, self.feedid)
+            try:
+                mysql = libmysql.MyDB(conf.g_conf['db_net_assist']);
+                mysql.execute(sql)
+            except Exception, e:
+                logger.error("ERROR\t%s",e);
+                return 8 
+
+            #delete success
+            return 0
+    def returnRes(self, para):
+        output = {}
+        if (para == 0):
+            output['status'] = 0 
+            output['msg'] = 'success'
+        else:
+            output['status'] = para 
+            output['msg'] = 'failed'
+
+        output['data'] = self.feedid
+        return  json.dumps(output)
+
+    def GET(self, *args):
+        self.getInput()
+        
+        if (len(self.op) <=0 or len(self.uid) <= 0 or len(self.feedid) <= 0):
+            return self.faildOutput(-1, "Input Invalid")
+
+        if (self.op == "add"):
+            return self.returnRes(self.addUid()) 
+
+        if (self.op == "del"):
+            return self.returnRes(self.delUid()); 
+
+        output = {}
+        output['status'] = 1 
+        output['msg'] = 'failed'
+        output['data'] = self.feedid
+        return  json.dumps(output)
+
+

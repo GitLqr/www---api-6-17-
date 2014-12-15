@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/Apsara/!svn/ver/287744/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module
+END
+video_detail.py
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/Apsara/!svn/ver/274688/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/video_detail.py
+END
+common.py
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/Apsara/!svn/ver/287731/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/common.py
+END
+news_cards.py
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/Apsara/!svn/ver/287468/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/news_cards.py
+END
+news_interface.py
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/Apsara/!svn/ver/287744/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/news_interface.py
+END
+feedRecommend.py
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/Apsara/!svn/ver/287510/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/feedRecommend.py
+END
+feedContent.py
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/Apsara/!svn/ver/285630/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/feedContent.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/Apsara/!svn/ver/264463/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/__init__.py
+END
+feedList.py
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/Apsara/!svn/ver/286365/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/feedList.py
+END
+weather.py
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/Apsara/!svn/ver/287386/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/weather.py
+END
+music_interface.py
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/Apsara/!svn/ver/274681/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/music_interface.py
+END
+video_interface.py
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/Apsara/!svn/ver/287671/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/video_interface.py
+END
+local_theater.py
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/Apsara/!svn/ver/287578/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/local_theater.py
+END

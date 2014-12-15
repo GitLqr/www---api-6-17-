@@ -1,0 +1,86 @@
+#-*- coding: utf8 -*-
+import sys
+import web
+import logging
+import logging.config
+import json
+import conf
+
+import module.recommend.data_manage.model_interface as recommend_model_interface
+recommend_model_interface.db_cache_init( conf.getConfig( 'db_recommend' ), conf.getConfig( 'cache_recommend' ) )
+import module.recommend.request_recommend.online_clicklog_feedback as online_clicklog_feedback
+
+# getLogger
+logger = logging.getLogger() 
+logger_info = logging.getLogger( 'info' )
+        
+class clsActionRecord:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+        
+    def getInput ( self ):
+        try:
+            self.inPars = web.input( action='' ) 
+            logger.debug( 'input: %s', str(self.inPars) )
+            logger_info.info( '%s', json.dumps( self.inPars, ensure_ascii=False ) )
+            return True ;
+        except:
+            logger.error( "input invalid, %s, %s" ,sys.exc_info()[0] , sys.exc_info()[1] )
+            return False
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps( output, ensure_ascii=False )
+
+    def GET( self, *args ):
+        # get input params
+        if not self.getInput() :
+            return self.faildOutput( -1, 'params invalid')
+
+        # 日志反馈
+        self.ClickLogFeedBack()
+        
+        status = 0
+        msg = ''
+        
+        output = {}
+        output['status'] = status 
+        output['msg'] = msg 
+
+        return json.dumps( output, ensure_ascii=False )
+
+    def ClickLogFeedBack( self ):
+        action = self.inPars['action'].lower()
+
+        # 如果是点击行为，则反馈给推荐
+        if action == 'jr' :
+            uid = self.inPars.get('umid')
+            feed_id = self.inPars.get('card_id')
+            reason = self.inPars.get('reason')
+            res_id = self.inPars.get('resource_id')
+            
+            if uid == None or feed_id == None or reason == None or res_id == None:
+                logger.error( 'online_clicklog_feedback(jr), input invalid...' )
+            else:
+                logger.debug( 'online_clicklog_feedback(jr)...' )
+                online_clicklog_feedback.merge_user_recent_feature(\
+                        {"uid": uid, "item_id": res_id,"card_feature": reason, "type":"click"} )
+
+        elif action == 'xh' :
+            uid = self.inPars.get('umid')
+            feed_id = self.inPars.get('card_id')
+            reason = self.inPars.get('reason')
+            res_id = self.inPars.get('resource_id')
+            
+            if uid == None or feed_id == None or reason == None or res_id == None:
+                logger.error( 'online_clicklog_feedback(xh), input invalid...' )
+            else:
+                logger.debug( 'online_clicklog_feedback(xh)...' )
+                online_clicklog_feedback.merge_user_recent_feature(\
+                        {"uid": uid, "item_id": res_id,"card_feature": reason, "type":"like"} )
+
+    

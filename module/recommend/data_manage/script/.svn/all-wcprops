@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/Apsara/!svn/ver/287641/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script
+END
+start_clear_online_cache.py
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/Apsara/!svn/ver/285015/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/start_clear_online_cache.py
+END
+schedule.py
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/Apsara/!svn/ver/287641/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/schedule.py
+END
+clear_all_cache.py
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/Apsara/!svn/ver/285015/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/clear_all_cache.py
+END
+start_cache_update.py
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/Apsara/!svn/ver/285015/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/start_cache_update.py
+END
+cache_update_together.py
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/Apsara/!svn/ver/285015/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/cache_update_together.py
+END
+clear_user_cache.py
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/Apsara/!svn/ver/287641/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/data_manage/script/clear_user_cache.py
+END

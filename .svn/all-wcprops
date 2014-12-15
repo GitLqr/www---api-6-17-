@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/Apsara/!svn/ver/287759/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www
+END
+db_cache.py
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/Apsara/!svn/ver/280920/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/db_cache.py
+END
+uwsgi.sh
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/Apsara/!svn/ver/266470/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/uwsgi.sh
+END
+web_main.py
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/Apsara/!svn/ver/286365/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/web_main.py
+END
+logging.conf
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/Apsara/!svn/ver/287719/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/logging.conf
+END
+web_main.sh
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/Apsara/!svn/ver/264627/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/web_main.sh
+END
+conf.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Apsara/!svn/ver/286549/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/conf.py
+END
+urls.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Apsara/!svn/ver/287736/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/urls.py
+END
+uwsgi.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/Apsara/!svn/ver/264948/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/uwsgi.xml
+END

@@ -1,0 +1,31 @@
+# created by hualai.deng , 2013-04-01
+########################################################################
+# configure the url route
+urls = (
+    ('/hello', 'interface.hello.hello'),
+    ('/getFeedList', 'interface.getFeedList.clsGetFeedList', 'user_id=10', 'begin_time=343423', 'count=20'),
+    ('/getUserFeedList', 'interface.getUserFeedList.clsGetFeedList', 'user_id=10'),
+    ('/getFeedContent', 'interface.getFeedContent.clsGetFeedContent', 'feedid=10'),
+    ('/addSubscription_test', 'interface.addSubscription_test.addSubscription'),
+    ('/addSubscription', 'interface.addSubscription.addSubscription'),
+)
+
+
+#########################################################################
+# methods
+#########################################################################
+# return urls map
+def getUrlsMap ():
+    global urls
+    urlsMap = []
+    for urlInfo in urls:
+        urlsMap.append( urlInfo[0] )
+        urlsMap.append( urlInfo[1] )
+
+    return urlsMap
+        
+    
+########################################################################
+# test
+if __name__ == "__main__" :
+    print str(urls)

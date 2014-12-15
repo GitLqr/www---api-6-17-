@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/Apsara/!svn/ver/287719/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend
+END
+online_data_def.py
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/Apsara/!svn/ver/287259/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/online_data_def.py
+END
+online_recommend_result.py
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/Apsara/!svn/ver/287307/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/online_recommend_result.py
+END
+reason_desc.txt
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/Apsara/!svn/ver/286454/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/reason_desc.txt
+END
+util.py
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/Apsara/!svn/ver/287603/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/util.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/Apsara/!svn/ver/280935/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/__init__.py
+END
+online_clicklog_feedback.py
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/Apsara/!svn/ver/287629/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/online_clicklog_feedback.py
+END
+translate_reason.py
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/Apsara/!svn/ver/287629/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/translate_reason.py
+END
+reason_tool.py
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/Apsara/!svn/ver/286454/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/reason_tool.py
+END
+online_request_recommend_app.py
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/Apsara/!svn/ver/287719/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/online_request_recommend_app.py
+END
+reason_desc.py
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/Apsara/!svn/ver/286454/galaxy/trunk2/user_profiler/net_assist_data_backend/online/www/module/recommend/request_recommend/reason_desc.py
+END

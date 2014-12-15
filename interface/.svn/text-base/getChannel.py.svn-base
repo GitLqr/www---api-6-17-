@@ -1,0 +1,92 @@
+import os, time
+import web
+import logging
+import logging.config
+import conf
+import common.libredis as libredis
+import common.mydb as libmysql
+import urllib
+import urllib2
+import urlparse
+import string
+import module.news_interface
+
+import json
+# getLogger
+logger = logging.getLogger() 
+
+class getChannel:        
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+        self.filepath = os.getcwd()
+        self.getVideoHeadFFile(self.filepath + "/conf/video.json");
+
+    def getVideoHeadFFile(self, file_url):
+        try:
+            fin = open(file_url, "r")
+            self.videohead = fin.read()
+            fin.close()
+        except:
+            logger.error("ERROR: open '%s' failed"%(file_url))
+            return None
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+
+    def faildOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        
+        return  json.dumps(output)
+
+    def getInput (self):
+        try:
+            inPars = web.input() 
+            #head
+            self.method = inPars.get('method').encode("utf8") if isinstance(inPars.get('method'), unicode) else inPars.get('method')
+            self.type = inPars.get('type').encode("utf8")  if isinstance(inPars.get('type'), unicode) else inPars.get('type') 
+            return 1
+        except:
+            return -1;
+
+    def returnRes(self, para):
+        output = {}
+        if (para == 0):
+            output['status'] = 0 
+            output['msg'] = 'success'
+        else:
+            output['status'] = para 
+            output['msg'] = 'failed'
+        return 0;
+
+    def getHead(self):
+        return {}
+
+    def getList(self):
+        return {}
+       
+    def getDetail(self):
+        return {}
+
+    def GET(self, *args):
+        resdata = self.getInput()
+        if resdata <= 0:
+            return self.faildOutput(-1, "Input Invalid")
+
+        output = {}
+        if (self.method == "getHead"):
+            output = self.getHead();
+            return  json.dumps(output)
+
+        if (self.method == "getList"):
+            output = self.getList();
+            return  json.dumps(output)
+
+        if (self.method == "getDetail"):
+            output = self.getDetail();
+            return  json.dumps(output, ensure_ascii=False)
+
+        output['status'] = 1 
+        output['msg'] = 'failed'
+        return  json.dumps(output)
+

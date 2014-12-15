@@ -1,0 +1,71 @@
+import os, time
+import web
+import logging
+import logging.config
+import conf
+import common.libredis as libredis
+import urllib
+import urllib2
+import urlparse
+import string
+import time
+try:
+    import simplejson as json
+except:
+    import json
+
+# getLogger
+logger = logging.getLogger()
+
+class getAreaList:
+    def __init__ ( self ):
+        logger.debug( self.__class__.__name__ + ' begin...' )
+        web.header( 'Content-Type', 'text/html;charset=utf-8' )
+
+    def __del__ ( self ):
+        logger.debug( self.__class__.__name__ + ' end!' )
+
+    def failedOutput ( self, err, msg ):
+        output = {'status': err, 'msg' : msg}
+        return  json.dumps(output)
+
+    def getAreaList ( self ) :
+        redisCli = libredis.libredis( conf.g_conf['redis_net_assist'], 'others' )
+        noCacheFlag = 0
+        if redisCli.Exists("area_list_time"):
+            logger.debug("area_list_time value exists in cache")
+            lastUpdateTime = int(redisCli.Get("area_list_time"))
+            curUnixTime = int(time.time())
+            if curUnixTime - lastUpdateTime > 86400:
+                noCacheFlag = 1
+            else:
+                if redisCli.Exists("area_list"):
+                    logger.debug("get area list from cache")
+                    self.areaList = json.loads(redisCli.Get("area_list"), strict = False )
+                    return True
+                else:
+                    noCacheFlag = 1
+        else:
+            noCacheFlag = 1
+        if noCacheFlag == 1:
+            try:
+                self.areaList = json.load(urllib.urlopen("http://gtools.alibabalabs.com/apphelper/data/area.json"), strict = False)
+                #redisCli.Set("area_list", areaListStr)
+                curUnixTime = int(time.time())
+                #redisCli.Set("area_list_time", str(curUnixTime))
+                return True
+            except:
+                logger.error( "Read area list from remote url failed" );
+                self.areaList = []
+                return False
+    def GET( self, *args ):
+        if not self.getAreaList() :
+            logger.error("getAreaList() failed")
+            return self.failedOutput( -1, "get area_list from cache or url failed" )
+        output = {}
+        output['status'] = 0
+        output['msg'] = ''
+        output['data'] = self.areaList
+
+        return json.dumps( output, ensure_ascii=False )
+        
